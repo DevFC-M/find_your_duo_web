@@ -24,7 +24,7 @@ function App() {
   const [games, setGames] = useState <Game[]>([]);
   
   useEffect(() => {
-    fetch('http://localhost:3000/games')
+    fetch('http://localhost:19001/games')
       .then(response => response.json())
       .then(data => {
         setGames(data);
