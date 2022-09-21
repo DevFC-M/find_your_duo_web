@@ -1,8 +1,27 @@
-import { GameController } from 'phosphor-react';
+import { Check, GameController } from 'phosphor-react';
 import { Input } from './Forms/Input';
 import * as Dialog from '@radix-ui/react-dialog'
+import * as Checkbox from '@radix-ui/react-checkbox'
+import { useEffect, useState } from 'react';
+import { SelectGame } from './Forms/SelectGame';
+
+interface Game {
+    id: string;
+    title: string;
+}
 
 export function CreateAdModal() {
+
+    const [games, setGames] = useState <Game[]>([]);
+
+    useEffect(() => {
+        fetch('http://localhost:19001/games')
+          .then(response => response.json())
+          .then(data => {
+            setGames(data);
+          })
+      }, []);
+
     return (
         <Dialog.Portal>
           <Dialog.Overlay className="bg-black/60 inset-0 fixed"/>
@@ -13,7 +32,7 @@ export function CreateAdModal() {
 
               <div className="flex flex-col gap-2">
                 <label htmlFor="game" className="font-semibold">Qual o game?</label>
-                <Input placeholder="Selecione o game que deseja jogar" />
+                <SelectGame games={games}/>
               </div>
 
               <div className="flex flex-col gap-2">
@@ -84,8 +103,14 @@ export function CreateAdModal() {
                 </div>
               </div>
               
-              <div className="mt-2 flex gap-2 text-sm">
-                <Input type="checkbox"/>
+              <div className="mt-2 flex gap-2 text-sm items-center ">
+                <Checkbox.Root className="w-6 h-6 rounded bg-zinc-900 p-1"> 
+                    <Checkbox.Indicator>
+                        <Check 
+                            className="w-4 h-4 text-emerald-400"
+                        />
+                    </Checkbox.Indicator>
+                </Checkbox.Root>
                 Costumo me conectar no chat de voz
               </div>
 
